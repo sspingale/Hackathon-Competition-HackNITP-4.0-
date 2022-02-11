@@ -1,0 +1,80 @@
+export default class Pendulum{
+    constructor(canvas,width=800,height=600){
+        this.canvas = canvas
+        this.ctx = this.canvas.getContext("2d")
+        this.canvas.width = width
+        this.canvas.height = height
+        this.currentAngle = 0
+        this.maxAngle =60
+        this.animationInterval = null
+        this.delta = 1
+    }
+    
+    setUp(currentAngle = 0,maxAngle = 60){
+        this.currentAngle = currentAngle
+        this.maxAngle = maxAngle
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+        this.ctx.fillStyle = "#CCCCCC"
+
+        this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)
+        if(currentAngle>maxAngle){
+            currentAngle = maxAngle
+        }
+        if(currentAngle<-maxAngle){
+            currentAngle = -maxAngle
+        }
+        // pivot point and platform
+        this.ctx.fillStyle="black"
+        this.ctx.beginPath()
+        this.ctx.arc(this.canvas.width/2,5,5,0,Math.PI*2,true)
+        this.ctx.fill()
+        this.ctx.closePath()
+        
+        // string of pendulum
+        let length = this.canvas.height/2
+        this.ctx.beginPath()
+        this.ctx.setLineDash([0,0])
+        this.ctx.moveTo(this.canvas.width/2,0)
+        this.ctx.lineTo(this.canvas.width/2+length*Math.sin(Math.PI*currentAngle/180),length*Math.cos(Math.PI*currentAngle/180))
+        this.ctx.stroke()
+        this.ctx.closePath()
+        
+        // bob
+        this.ctx.beginPath()
+        this.ctx.arc(this.canvas.width/2+length*Math.sin(Math.PI*currentAngle/180),length*Math.cos(Math.PI*currentAngle/180),15,0,Math.PI*2,true)
+        this.ctx.fill()
+        this.ctx.closePath()
+        
+        // dashed path
+        this.ctx.beginPath()
+        this.ctx.setLineDash([5,5])
+        this.ctx.arc(this.canvas.width/2,0,length-0,Math.PI/2-Math.PI*maxAngle/180,Math.PI/2+Math.PI*maxAngle/180)
+        this.ctx.stroke()
+        this.ctx.closePath()
+    }
+
+    startAnimation(){
+        this.animationInterval = setInterval(()=>{
+            this.setUp(this.currentAngle,this.maxAngle)
+            if(this.currentAngle>this.maxAngle || this.currentAngle<-this.maxAngle){
+                this.delta = -this.delta
+            }
+            this.currentAngle +=this.delta
+        },10) 
+    }
+
+    stopAnimation(){
+        if(this.animationInterval){
+            clearInterval(this.animationInterval)
+        }
+    }
+}
+
+let p = new Pendulum(document.querySelector("canvas"),800,600)
+p.setUp(0,80)
+start.onclick = ()=>{
+    p.startAnimation()
+}
+stopBtn.onclick = ()=>{
+    p.stopAnimation()
+}
