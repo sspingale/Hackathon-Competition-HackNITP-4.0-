@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Science -Circular</title>
+    <link rel="shortcut icon" href="../static/icon.png" type="image/x-icon">
+    <style>
+        .heading{
+            margin-bottom: 10px;
+            margin-left: 20px;
+        }
+        .detail{
+            padding: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <%- include("animationBase") %> 
+    <h1 class="heading display-3">Circular Motion</h1>
+    <div class="container d-flex align-items-center justify-content-center flex-column">
+        <canvas id="canvas" height="600" width="800"></canvas>
+        <div class="detail">
+            <h1 style="margin-left:10px;">Points to Remember &RightArrow;</h1>
+            <ul style="list-style: square;" class="d-flex flex-column justify-content-evenly align-items-left">
+                <li>Circular motion is a movement of an object along the circumference of a circle or rotation along a circular path.</li>
+                <li>In this speed of the object is constant but velcoity is variable because it's direction is always changing.</li>
+                <li>There are two types of acceleration i.e. Radial Acceleration '&alpha;' (Towards the center of the circle) and Tangential Acceleration 'a' (Tangential to the center of the Circle )</li>
+                <li> &alpha; = &omega;<sup>2</sup>r</li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script type="module" src="../static/animations/Circular.js"></script>
+</html>

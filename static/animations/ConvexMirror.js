@@ -1,12 +1,11 @@
-export default class ConvexMirror{
-    #animationInterval = null
+class ConvexMirror{
     constructor(canvas,width=800,height=600){
         this.canvas = canvas
         this.ctx = this.canvas.getContext("2d")
         this.canvas.width = width
         this.canvas.height = height
 
-        this.ctx.fillStyle = "#CCCCCC"
+        this.ctx.fillStyle = "rgba(0,0,0,0.1)"
         this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)
         this.angle = Math.PI/4
         this.radius = this.canvas.width/4
@@ -18,7 +17,7 @@ export default class ConvexMirror{
         * Case-2 -> object is between Infinity and pole
     */
 
-    #calculateImageParams(objectDistance,objectHeight){
+    calculateImageParams(objectDistance,objectHeight){
         /*
             *Mirror Formula:
             *1/f = 1/v + 1/u
@@ -33,9 +32,11 @@ export default class ConvexMirror{
     }
 
     drawSetup({curvature=120,objectDistance=70,objectHeight = 60,radiusOfCuravture=this.canvas.width/4}){
-        // this.ctx.scale(2,2)
-        // this.ctx.transform(1,0,0,1,-this.canvas.width/4,-this.canvas.height/4)
         this.radius = radiusOfCuravture
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+        this.ctx.fillStyle = "rgba(0,0,0,0.1)"
+        this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)
+
         // *principal axis
         this.ctx.beginPath()
         this.ctx.moveTo(20,this.canvas.height/2)
@@ -92,13 +93,12 @@ export default class ConvexMirror{
         this.ctx.closePath()
 
         // *make image
-        let {imageHeight,imageDistance} = this.#calculateImageParams(objectDistance,objectHeight)
+        let {imageHeight,imageDistance} = this.calculateImageParams(objectDistance,objectHeight)
         this.ctx.beginPath()
         this.ctx.lineWidth=2
         this.ctx.setLineDash([5, 5]);
         this.ctx.moveTo(this.centerOfCuravature.x + this.radius-imageDistance,this.canvas.height/2)
         this.ctx.lineTo(this.centerOfCuravature.x + this.radius-imageDistance,this.canvas.height/2 - imageHeight)
-        console.log(imageHeight,imageDistance,this.radius);
         this.ctx.stroke()
         this.ctx.closePath()
 
@@ -122,11 +122,47 @@ export default class ConvexMirror{
     }
 }
 
+const objectDistance = document.getElementById("objectDistance")
+const objectHeight = document.getElementById("objectHeight")
+const visualizeBtn = document.getElementById("visualizeBtn")
+const imageDistance = document.getElementById("imageDistance")
+const imageHeight = document.getElementById("imageHeight")
+const radius = document.getElementById("radius")
+radius.value = '200'
 
-let c = new ConvexMirror(document.querySelector("canvas"))
+let c = new ConvexMirror(document.querySelector("#mainCanvas"),window.innerWidth/2,window.innerHeight/1.5)
 c.drawSetup({
-    curvature:125,
-    objectDistance:60,
-    objectHeight:70,
-    radiusOfCuravture:120
+    objectDistance:80,
+    objectHeight:0,
+    radiusOfCuravture:Number(radius.value)
 })
+
+visualizeBtn.addEventListener("click",()=>{
+    c.drawSetup({
+        radiusOfCurvature:Number(radius.value),
+        objectDistance:Number(objectDistance.value),
+        objectHeight:Number(objectHeight.value)
+    })
+    imageDistance.value = c.calculateImageParams(Number(objectDistance.value),Number(objectHeight.value)).imageDistance.toFixed(2)
+
+    imageHeight.value = c.calculateImageParams(Number(objectDistance.value),Number(objectHeight.value)).imageHeight.toFixed(2) || ""
+})
+
+
+const caseCanvas1 = document.getElementById("case1")
+const caseCanvas2 = document.getElementById("case2")
+
+let w=350,h=350
+let c1 = new ConvexMirror(caseCanvas1,w,h)
+c1.drawSetup({
+    objectDistance:c1.radius/2,
+    objectHeight:70
+})
+c1.ctx.fillText("Case-1",w/2-50,50,100)
+
+let c2 = new ConvexMirror(caseCanvas2,w,h)
+c2.drawSetup({
+    objectDistance:Infinity,
+    objectHeight:70
+})
+c2.ctx.fillText("Case-2",w/2-50,50,100)

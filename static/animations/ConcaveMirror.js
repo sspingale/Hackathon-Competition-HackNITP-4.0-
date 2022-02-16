@@ -6,7 +6,7 @@ export default class ConcaveMirror{
         this.canvas.width = width
         this.canvas.height = height
 
-        this.ctx.fillStyle = "#CCCCCC"
+        this.ctx.fillStyle = "rgba(0,0,0,0.1)"
         this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)
         this.angle = Math.PI/4
         this.radius = this.canvas.width/4
@@ -22,7 +22,7 @@ export default class ConcaveMirror{
         * Case-6 -> object is at Infinity
     */
 
-    #calculateImageParams(objectDistance,objectHeight){
+    calculateImageParams(objectDistance,objectHeight){
         /*
             *Mirror Formula:
             *1/f = 1/v + 1/u
@@ -32,10 +32,14 @@ export default class ConcaveMirror{
         let v = (f*u)/(u-f)
         let m = (-v/u)
         let imageHeight = m*objectHeight
-        return {imageDistance:v,imageHeight}
+        return {imageDistance:v,imageHeight,magnification:m}
     }
 
-    drawSetup({curvature=120,objectDistance=70,objectHeight = 60}){
+    drawSetup({curvature=120,objectDistance=70,objectHeight = 60,radiusOfCurvature=this.canvas.width/4}){
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+        this.ctx.fillStyle = "rgba(0,0,0,0.1)"
+        this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)
+        this.radius = radiusOfCurvature
         //* draw mirror
         this.ctx.beginPath();
         this.ctx.fillStyle = "black"
@@ -97,13 +101,12 @@ export default class ConcaveMirror{
         this.ctx.closePath()
 
         // *make image
-        let {imageHeight,imageDistance} = this.#calculateImageParams(objectDistance,objectHeight)
+        let {imageHeight,imageDistance,magnification} = this.calculateImageParams(objectDistance,objectHeight)
         this.ctx.beginPath()
         this.ctx.lineWidth=2
         this.ctx.setLineDash([5, 5]);
         this.ctx.moveTo(this.centerOfCuravature.x - this.radius-imageDistance,this.canvas.height/2)
         this.ctx.lineTo(this.centerOfCuravature.x - this.radius-imageDistance,this.canvas.height/2 - imageHeight)
-        console.log(imageHeight,imageDistance,this.radius);
         this.ctx.stroke()
         this.ctx.closePath()
         
@@ -127,8 +130,77 @@ export default class ConcaveMirror{
     }
 }
 
-let c = new ConcaveMirror(document.querySelector("canvas"))
+let c = new ConcaveMirror(document.querySelector("#mainCanvas"),window.innerWidth/2,window.innerHeight/1.5)
+const objectDistance = document.getElementById("objectDistance")
+const objectHeight = document.getElementById("objectHeight")
+const visualizeBtn = document.getElementById("visualizeBtn")
+const imageDistance = document.getElementById("imageDistance")
+const imageHeight = document.getElementById("imageHeight")
+const radius = document.getElementById("radius")
+radius.value = '200'
 c.drawSetup({
-    objectDistance:c.radius/4,
-    objectHeight:100,
+    objectDistance:40,
+    objectHeight:0,
+    radiusOfCurvature:Number(radius.value)
 })
+
+visualizeBtn.addEventListener("click",()=>{
+    c.drawSetup({
+        objectDistance:Number(objectDistance.value),
+        objectHeight:Number(objectHeight.value),
+        radiusOfCurvature:Number(radius.value)
+    })
+    imageDistance.value = c.calculateImageParams(Number(objectDistance.value),Number(objectHeight.value)).imageDistance.toFixed(2)
+
+    imageHeight.value = c.calculateImageParams(Number(objectDistance.value),Number(objectHeight.value)).imageHeight.toFixed(2)
+})
+
+const caseCanvas1 = document.getElementById("case1")
+const caseCanvas2 = document.getElementById("case2")
+const caseCanvas3 = document.getElementById("case3")
+const caseCanvas4 = document.getElementById("case4")
+const caseCanvas5 = document.getElementById("case5")
+const caseCanvas6 = document.getElementById("case6")
+
+let w=350,h=350
+let c1 = new ConcaveMirror(caseCanvas1,w,h)
+c1.drawSetup({
+    objectDistance:c1.radius/4,
+    objectHeight:40
+})
+c1.ctx.fillText("Case-1",w/2-50,50,100)
+
+let c2 = new ConcaveMirror(caseCanvas2,w,h)
+c2.drawSetup({
+    objectDistance:c2.radius/2,
+    objectHeight:70
+})
+c2.ctx.fillText("Case-2",w/2-50,50,100)
+
+let c3 = new ConcaveMirror(caseCanvas3,w,h)
+c3.drawSetup({
+    objectDistance:1.5*c3.radius/2,
+    objectHeight:70
+})
+c3.ctx.fillText("Case-3",w/2-50,50,100)
+
+let c4 = new ConcaveMirror(caseCanvas4,w,h)
+c4.drawSetup({
+    objectDistance:c4.radius,
+    objectHeight:70
+})
+c4.ctx.fillText("Case-4",w/2-50,50,100)
+
+let c5 = new ConcaveMirror(caseCanvas5,w,h)
+c5.drawSetup({
+    objectDistance:1.5*c5.radius,
+    objectHeight:70
+})
+c5.ctx.fillText("Case-5",w/2-50,50,100)
+
+let c6 = new ConcaveMirror(caseCanvas6,w,h)
+c6.drawSetup({
+    objectDistance:Infinity,
+    objectHeight:70
+})
+c6.ctx.fillText("Case-6",w/2-50,50,100)

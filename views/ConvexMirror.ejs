@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConvexMirror</title>
+    <link rel="shortcut icon" href="../static/icon.png" type="image/x-icon">
+    <style>
+        .heading{
+            font-family: monospace;
+        }
+        canvas{
+            margin-left:0px ;
+        }
+        .case{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            flex-direction: column;
+        }
+        .allCases{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            grid-template-rows: repeat(1,1fr);
+            width: 100%;
+            padding: 20px;
+            row-gap: 10px;
+            column-gap: 10px;
+            grid-auto-flow: dense;
+        }
+        .case .desc{
+            text-align: center;
+            margin-top: 10px;
+            font-size: 15px;
+            font-family: monospace;
+        }
+        .casesHeading{
+            margin-top: 20px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <%- include("animationBase") %> 
+    <h1 class="display-5 mx-4 heading mb-2 mt-2">Convex Mirror</h1>
+    <div class="container d-flex flex-wrap justify-content-between">
+        <canvas id="mainCanvas"></canvas>
+
+        <div class="tools border rounded-3 px-5 py-3">
+            <h3 class="text-center">Tools</h3>
+            <div class="mb-3 row">
+                <label for="radius" class="form-label">Radius of Curvature</label>
+                <input type="number" class="form-control" id="radius" placeholder="Enter Radius of Curvature">
+            </div>
+
+            <div class="mb-3 row">
+                <label for="objectDistance" class="form-label">Object Distance</label>
+                <input type="number" class="form-control" id="objectDistance" placeholder="Enter Object Distance">
+            </div>
+
+            <div class="mb-3 row">
+                <label for="objectHeight" ,1frclass="form-label">Object Height</label>
+                <input type="number" class="form-control" id="objectHeight" placeholder="Enter Object Height">
+              </div>
+
+              <button id="visualizeBtn" class="btn btn-success">Visualize</button>
+
+                <hr>
+              <div class="display">
+                <div class="mb-3 row">
+                <label for="imageDistance" class="form-label">Image Distance</label>
+                <input class="form-control" type="text" id="imageDistance" value="" aria-label="readonly input example" readonly>
+                </div>
+
+                <div class="mb-3 row">
+                <label for="imageHeight" class="form-label">Image Height</label>
+                <input class="form-control" id="imageHeight" type="text" value="" aria-label="readonly input example" readonly>
+                </div>
+              </div>
+        </div>
+    </div>
+    <h1 class="text-center casesHeading">Cases of Convex Mirror</h1>
+    <div class="allCases container">
+       <div class="case">
+           <canvas id="case1"></canvas>
+           <div class="desc">
+               This is the case when object is between pole and infinity.
+               Here image will form behind the mirror and it will be diminished and erect.
+           </div>
+       </div>
+       <div class="case">
+           <canvas id="case2"></canvas>
+           <div class="desc">
+            This is the case when object is at infinity
+            Here image will form at focus and it will be of point size.
+        </div>
+    </div>
+</body>
+<script src="../static/animations/ConvexMirror.js"></script>
+</html>

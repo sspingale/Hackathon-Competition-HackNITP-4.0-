@@ -1,0 +1,45 @@
+#offcanvasRight{
+    background-color: rgb(33,37,41);
+    color: white;
+    font-weight: bolder;
+    overflow-y: auto;
+}
+.btn-close{
+    background: none;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#offcanvasRightLabel{
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+}
+.navbar{
+    background: transparent !important;
+}
+
+.startingPage{
+    font-family: monospace;
+}
+
+.text{
+    font-size: 19px;
+    font-family: monospace;
+    letter-spacing: 1px;
+    width: 80%;
+}
+
+.list-group li{
+    cursor: pointer;
+    margin: 10px 0px;
+    padding: 10px;
+    font-size: 25px;
+    text-align: center;
+    font-family: monospace;
+}
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Science - Projectile</title>
+    <link rel="shortcut icon" href="../static/icon.png" type="image/x-icon">
+    <style>
+        .heading{
+            margin-bottom: 10px;
+            margin-left: 20px;
+        }
+        .detail{
+            padding: 10px;
+            font-size: 20px;
+        }
+        canvas{
+            margin-left: -25px;
+        }
+    </style>
+</head>
+<body>
+    <%- include("animationBase") %> 
+    <h1 class="heading display-3">
+        Projectile Motion
+    </h1>
+    <div class="container d-flex justify-content-between">
+        <canvas id="canvas" height="400" width="675"></canvas>
+        <div class="detail">
+            <h1 style="margin-left:10px;">Points to Remember &RightArrow;</h1>
+            <ul style="list-style: square;" class="d-flex flex-column justify-content-evenly align-items-left">
+                <li>Projectile motion is the motion of an object thrown or projected into the air, subject to only the acceleration of gravity.The object is called a projectile, and its path is called its trajectory.</li>
+                <li>Formulas &RightArrow;
+                    <ul style="list-style: circle;">
+                    <li>Time Period(T) = 2usin(&theta;)/g</li>
+                    <li>Range(R) = u<sup>2</sup>sin(2&theta;)/g</li>
+                    <li>Maximum Height(H<sub>max</sub>) = u<sup>2</sup>sin<sup>2</sup>(&theta;)/2g</li>
+                </ul></li>
+                <li>Maximum Range occurs at &theta; = 45&deg;</li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script type="module" src="../static/animations/Projectile.js"></script>
+</html>
